@@ -34,6 +34,7 @@ window.addEventListener('DOMContentLoaded', function() {
         this.START = 0;
         this.NORMAL = 1;
         this.END = 2;
+        this.MARGIN = 3;
 
         this.timeTable = [
             {time: 0, type: this.START}, {time: 120, type: this.END},
@@ -137,7 +138,7 @@ window.addEventListener('DOMContentLoaded', function() {
     var timer = new Timer();
 
     $startButton.addEventListener('click', function() {
-        timer.time -= $startInput.value * 1000;
+        timer.time -= $startInput.value * 1000 + 3000;
         timer.start();
     });
     $pauseButton.addEventListener('click', function() {
