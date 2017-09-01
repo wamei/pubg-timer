@@ -17,6 +17,8 @@ window.addEventListener('DOMContentLoaded', function() {
     for (var i = 0, n = soundTable.length; i < n; i++) {
         $sounds.push(document.querySelector('#sound' + soundTable[i]));
     }
+    var $soundStart = document.querySelector('#soundstart');
+    var $soundEnd = document.querySelector('#soundend');
 
     var Timer = function() {
         this.time = 0;
@@ -24,7 +26,22 @@ window.addEventListener('DOMContentLoaded', function() {
         this.startTime = 0;
         this.timerId = 0;
 
-        this.timeTable = [420, 920, 1210, 1420, 1600, 1730, 1850, 1940, 2150, 2165];
+        this.START = 0;
+        this.NORMAL = 1;
+        this.END = 2;
+
+        this.timeTable = [
+            {time: 120, type: this.START},
+            {time: 420, type: this.NORMAL}, {time: 720, type: this.END},
+            {time: 920, type: this.NORMAL}, {time: 1060, type: this.END},
+            {time: 1210, type: this.NORMAL}, {time: 1300, type: this.END},
+            {time: 1420, type: this.NORMAL}, {time: 1480, type: this.END},
+            {time: 1600, type: this.NORMAL}, {time: 1640, type: this.END},
+            {time: 1730, type: this.NORMAL}, {time: 1760, type: this.END},
+            {time: 1850, type: this.NORMAL}, {time: 1880, type: this.END},
+            {time: 1940, type: this.NORMAL}, {time: 1955, type: this.END},
+            {time: 2150, type: this.NORMAL}, {time: 2165, type: this.END}
+        ];
         this.timeTableIndex = 0;
         this.soundIndex = 0;
         this.timerId = window.setInterval(this.loop.bind(this), 100);
@@ -38,20 +55,44 @@ window.addEventListener('DOMContentLoaded', function() {
 
         var timeTable = this.timeTable[this.timeTableIndex];
 
-        if (timeTable - soundTable[this.soundIndex] <= time) {
-            $sounds[this.soundIndex].volume = 0.5;
-            $sounds[this.soundIndex].play();
-            this.soundIndex++;
-            if (this.soundIndex >= soundTable.length) {
-                this.timeTableIndex++;
-                this.soundIndex = 0;
-                if (this.timeTableIndex >= this.timeTable.length) {
-                    this.stop();
+        var infoPrefix = '';
+        switch(timeTable.type) {
+            case this.START:
+                infoPrefix = '次エリア決定まで';
+                if (timeTable.time <= time) {
+                    $soundStart.volume = 0.5;
+                    $soundStart.play();
+                    this.timeTableIndex++;
                 }
-            }
+                break;
+            case this.NORMAL:
+                infoPrefix = '範囲収縮まで';
+                if (timeTable.time - soundTable[this.soundIndex] <= time) {
+                    $soundEnd.pause();
+                    $sounds[this.soundIndex].volume = 0.5;
+                    $sounds[this.soundIndex].play();
+                    this.soundIndex++;
+                    if (this.soundIndex >= soundTable.length) {
+                        this.timeTableIndex++;
+                        this.soundIndex = 0;
+                        if (this.timeTableIndex >= this.timeTable.length) {
+                            this.stop();
+                        }
+                    }
+                }
+                break;
+            case this.END:
+                infoPrefix = '次エリア決定まで';
+                if (timeTable.time <= time) {
+                    $soundEnd.volume = 0.5;
+                    $soundEnd.play();
+                    this.timeTableIndex++;
+                }
+                break;
         }
-        var rest = timeTable - time;
-        $info.innerHTML = Math.floor(rest / 60) + '分' + rest % 60 + '秒';
+
+        var rest = timeTable.time - time;
+        $info.innerHTML = infoPrefix + Math.floor(rest / 60) + '分' + rest % 60 + '秒';
     }
     Timer.prototype.start = function() {
         this.startTime = new Date().getTime();
