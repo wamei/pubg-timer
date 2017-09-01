@@ -56,6 +56,7 @@ window.addEventListener('DOMContentLoaded', function() {
         if (!this.isRunning) {
             return;
         }
+        var rest;
         var now = new Date().getTime();
         var time = Math.floor((this.time + now - this.startTime) / 1000);
 
@@ -70,6 +71,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     $soundStart.play();
                     this.timeTableIndex++;
                 }
+                rest = timeTable.time - time - 3;
                 break;
             case this.NORMAL:
                 infoPrefix = '範囲収縮まで';
@@ -86,6 +88,7 @@ window.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                 }
+                rest = timeTable.time - time;
                 break;
             case this.END:
                 infoPrefix = '次エリア決定まで';
@@ -94,10 +97,10 @@ window.addEventListener('DOMContentLoaded', function() {
                     $soundEnd.play();
                     this.timeTableIndex++;
                 }
+                rest = timeTable.time - time;
                 break;
         }
 
-        var rest = timeTable.time - time;
         $info.innerHTML = infoPrefix + Math.floor(rest / 60) + '分' + rest % 60 + '秒';
     }
     Timer.prototype.start = function() {
