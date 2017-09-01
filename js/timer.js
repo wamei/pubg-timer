@@ -1,11 +1,15 @@
 window.addEventListener('DOMContentLoaded', function() {
+    var $startInputArea = document.querySelector('#startInputArea');
+    var $startInput = document.querySelector('#startInput');
     var $startButton = document.querySelector('#start');
-    var $start30Button = document.querySelector('#start30');
     var $pauseButton = document.querySelector('#pause');
     var $stopButton = document.querySelector('#stop');
     var $p1Button = document.querySelector('#p1');
     var $m1Button = document.querySelector('#m1');
 
+    $startInput.addEventListener('focus', function() {
+        this.select();
+    });
     $pauseButton.style.display = 'none';
     $stopButton.style.display = 'none';
     $p1Button.style.display = 'none';
@@ -32,7 +36,7 @@ window.addEventListener('DOMContentLoaded', function() {
         this.END = 2;
 
         this.timeTable = [
-            {time: 120, type: this.START},
+            {time: 0, type: this.START}, {time: 120, type: this.END},
             {time: 420, type: this.NORMAL}, {time: 720, type: this.END},
             {time: 920, type: this.NORMAL}, {time: 1060, type: this.END},
             {time: 1210, type: this.NORMAL}, {time: 1300, type: this.END},
@@ -59,7 +63,7 @@ window.addEventListener('DOMContentLoaded', function() {
         var infoPrefix = '';
         switch(timeTable.type) {
             case this.START:
-                infoPrefix = '次エリア決定まで';
+                infoPrefix = 'マッチ開始まで';
                 if (timeTable.time <= time) {
                     $soundStart.volume = 0.5;
                     $soundStart.play();
@@ -99,7 +103,7 @@ window.addEventListener('DOMContentLoaded', function() {
         this.startTime = new Date().getTime();
         this.isRunning = true;
         $startButton.style.display = 'none';
-        $start30Button.style.display = 'none';
+        $startInputArea.style.display = 'none';
         $pauseButton.style.display = 'inline';
         $stopButton.style.display = 'inline';
         $p1Button.style.display = 'inline';
@@ -110,7 +114,7 @@ window.addEventListener('DOMContentLoaded', function() {
         var now = new Date().getTime();
         this.time = this.time + now - this.startTime;
         $startButton.style.display = 'inline';
-        $start30Button.style.display = 'inline';
+        $startInputArea.style.display = 'inline';
         $pauseButton.style.display = 'none';
         $stopButton.style.display = 'none';
         $p1Button.style.display = 'none';
@@ -123,7 +127,7 @@ window.addEventListener('DOMContentLoaded', function() {
         this.timerId = 0;
         this.timeTableIndex = 0;
         $startButton.style.display = 'inline';
-        $start30Button.style.display = 'inline';
+        $startInputArea.style.display = 'inline';
         $pauseButton.style.display = 'none';
         $stopButton.style.display = 'none';
         $p1Button.style.display = 'none';
@@ -133,11 +137,8 @@ window.addEventListener('DOMContentLoaded', function() {
     var timer = new Timer();
 
     $startButton.addEventListener('click', function() {
+        timer.time -= $startInput.value * 1000;
         timer.start();
-    });
-    $start30Button.addEventListener('click', function() {
-        timer.start();
-        timer.time -= 30000;
     });
     $pauseButton.addEventListener('click', function() {
         timer.pause();
