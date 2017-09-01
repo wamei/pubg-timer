@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', function() {
     var $startButton = document.querySelector('#start');
+    var $start30Button = document.querySelector('#start30');
     var $pauseButton = document.querySelector('#pause');
     var $stopButton = document.querySelector('#stop');
     var $p1Button = document.querySelector('#p1');
@@ -98,6 +99,7 @@ window.addEventListener('DOMContentLoaded', function() {
         this.startTime = new Date().getTime();
         this.isRunning = true;
         $startButton.style.display = 'none';
+        $start30Button.style.display = 'none';
         $pauseButton.style.display = 'inline';
         $stopButton.style.display = 'inline';
         $p1Button.style.display = 'inline';
@@ -108,6 +110,7 @@ window.addEventListener('DOMContentLoaded', function() {
         var now = new Date().getTime();
         this.time = this.time + now - this.startTime;
         $startButton.style.display = 'inline';
+        $start30Button.style.display = 'inline';
         $pauseButton.style.display = 'none';
         $stopButton.style.display = 'none';
         $p1Button.style.display = 'none';
@@ -120,16 +123,21 @@ window.addEventListener('DOMContentLoaded', function() {
         this.timerId = 0;
         this.timeTableIndex = 0;
         $startButton.style.display = 'inline';
+        $start30Button.style.display = 'inline';
         $pauseButton.style.display = 'none';
         $stopButton.style.display = 'none';
         $p1Button.style.display = 'none';
         $m1Button.style.display = 'none';
-        $info.innerHTML = '--';
+        $info.innerHTML = '';
     }
     var timer = new Timer();
 
     $startButton.addEventListener('click', function() {
         timer.start();
+    });
+    $start30Button.addEventListener('click', function() {
+        timer.start();
+        timer.time -= 30000;
     });
     $pauseButton.addEventListener('click', function() {
         timer.pause();
