@@ -45,9 +45,13 @@ window.addEventListener('DOMContentLoaded', function() {
             if (this.soundIndex >= soundTable.length) {
                 this.timeTableIndex++;
                 this.soundIndex = 0;
+                if (this.timeTableIndex >= this.timeTable.length) {
+                    this.stop();
+                }
             }
         }
-        $info.innerHTML = timeTable - time;
+        var rest = timeTable - time;
+        $info.innerHTML = Math.floor(rest / 60) + '分' + rest % 60 + '秒';
     }
     Timer.prototype.start = function() {
         this.startTime = new Date().getTime();
