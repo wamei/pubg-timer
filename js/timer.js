@@ -2,9 +2,13 @@ window.addEventListener('DOMContentLoaded', function() {
     var $startButton = document.querySelector('#start');
     var $pauseButton = document.querySelector('#pause');
     var $stopButton = document.querySelector('#stop');
+    var $p1Button = document.querySelector('#p1');
+    var $m1Button = document.querySelector('#m1');
 
     $pauseButton.style.display = 'none';
     $stopButton.style.display = 'none';
+    $p1Button.style.display = 'none';
+    $m1Button.style.display = 'none';
 
     var $info = document.querySelector('#info');
 
@@ -51,6 +55,8 @@ window.addEventListener('DOMContentLoaded', function() {
         $startButton.style.display = 'none';
         $pauseButton.style.display = 'inline';
         $stopButton.style.display = 'inline';
+        $p1Button.style.display = 'inline';
+        $m1Button.style.display = 'inline';
     }
     Timer.prototype.pause = function() {
         this.isRunning = false;
@@ -59,6 +65,8 @@ window.addEventListener('DOMContentLoaded', function() {
         $startButton.style.display = 'inline';
         $pauseButton.style.display = 'none';
         $stopButton.style.display = 'none';
+        $p1Button.style.display = 'none';
+        $m1Button.style.display = 'none';
     }
     Timer.prototype.stop = function() {
         this.time = 0;
@@ -69,6 +77,8 @@ window.addEventListener('DOMContentLoaded', function() {
         $startButton.style.display = 'inline';
         $pauseButton.style.display = 'none';
         $stopButton.style.display = 'none';
+        $p1Button.style.display = 'none';
+        $m1Button.style.display = 'none';
         $info.innerHTML = '--';
     }
     var timer = new Timer();
@@ -81,5 +91,11 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     $stopButton.addEventListener('click', function() {
         timer.stop();
+    });
+    $m1Button.addEventListener('click', function() {
+        timer.time += 1000;
+    });
+    $p1Button.addEventListener('click', function() {
+        timer.time -= 1000;
     });
 }, false);
