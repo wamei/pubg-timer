@@ -7,9 +7,6 @@ window.addEventListener('DOMContentLoaded', function() {
     var $p1Button = document.querySelector('#p1');
     var $m1Button = document.querySelector('#m1');
 
-    $startInput.addEventListener('focus', function() {
-        this.select();
-    });
     $pauseButton.style.display = 'none';
     $stopButton.style.display = 'none';
     $p1Button.style.display = 'none';
@@ -35,6 +32,8 @@ window.addEventListener('DOMContentLoaded', function() {
         this.NORMAL = 1;
         this.END = 2;
         this.MARGIN = 3;
+
+        this.volume = 0.5;
 
         this.timeTable = [
             {time: 0, type: this.START}, {time: 120, type: this.END},
@@ -67,17 +66,18 @@ window.addEventListener('DOMContentLoaded', function() {
             case this.START:
                 infoPrefix = 'マッチ開始まで';
                 if (timeTable.time <= time) {
-                    $soundStart.volume = 0.5;
+                    $soundStart.volume = this.volume;
                     $soundStart.play();
                     this.timeTableIndex++;
                 }
                 rest = timeTable.time - time - 3;
+                rest = rest < 0 ? 0 : rest;
                 break;
             case this.NORMAL:
                 infoPrefix = '範囲収縮まで';
                 if (timeTable.time - soundTable[this.soundIndex] <= time) {
                     $soundEnd.pause();
-                    $sounds[this.soundIndex].volume = 0.5;
+                    $sounds[this.soundIndex].volume = this.volume;
                     $sounds[this.soundIndex].play();
                     this.soundIndex++;
                     if (this.soundIndex >= soundTable.length) {
@@ -93,7 +93,7 @@ window.addEventListener('DOMContentLoaded', function() {
             case this.END:
                 infoPrefix = '次エリア決定まで';
                 if (timeTable.time <= time) {
-                    $soundEnd.volume = 0.5;
+                    $soundEnd.volume = this.volume;
                     $soundEnd.play();
                     this.timeTableIndex++;
                 }
