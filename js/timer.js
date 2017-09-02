@@ -2,12 +2,10 @@ window.addEventListener('DOMContentLoaded', function() {
     var $startInputArea = document.querySelector('#startInputArea');
     var $startInput = document.querySelector('#startInput');
     var $startButton = document.querySelector('#start');
-    var $pauseButton = document.querySelector('#pause');
     var $stopButton = document.querySelector('#stop');
     var $p1Button = document.querySelector('#p1');
     var $m1Button = document.querySelector('#m1');
 
-    $pauseButton.style.display = 'none';
     $stopButton.style.display = 'none';
     $p1Button.style.display = 'none';
     $m1Button.style.display = 'none';
@@ -22,6 +20,14 @@ window.addEventListener('DOMContentLoaded', function() {
     var $soundStart = document.querySelector('#soundstart');
     var $soundEnd = document.querySelector('#soundend');
 
+    var volume = localStorage.getItem('pubgtimer_volume') / 100 || 0.5;
+    var $volume = document.querySelector('#volume');
+    $volume.addEventListener('change', function() {
+        volume = this.value / 100;
+        localStorage.setItem('pubgtimer_volume', this.value);
+    });
+    $volume.value = volume * 100;
+
     var Timer = function() {
         this.time = 0;
         this.isRunning = false;
@@ -32,8 +38,6 @@ window.addEventListener('DOMContentLoaded', function() {
         this.NORMAL = 1;
         this.END = 2;
         this.MARGIN = 3;
-
-        this.volume = 0.5;
 
         this.timeTable = [
             {time: 0, type: this.START}, {time: 120, type: this.END},
@@ -66,7 +70,7 @@ window.addEventListener('DOMContentLoaded', function() {
             case this.START:
                 infoPrefix = 'マッチ開始まで';
                 if (timeTable.time <= time) {
-                    $soundStart.volume = this.volume;
+                    $soundStart.volume = volume;
                     $soundStart.play();
                     this.timeTableIndex++;
                 }
@@ -77,7 +81,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 infoPrefix = '範囲収縮まで';
                 if (timeTable.time - soundTable[this.soundIndex] <= time) {
                     $soundEnd.pause();
-                    $sounds[this.soundIndex].volume = this.volume;
+                    $sounds[this.soundIndex].volume = volume;
                     $sounds[this.soundIndex].play();
                     this.soundIndex++;
                     if (this.soundIndex >= soundTable.length) {
@@ -93,7 +97,7 @@ window.addEventListener('DOMContentLoaded', function() {
             case this.END:
                 infoPrefix = '次エリア決定まで';
                 if (timeTable.time <= time) {
-                    $soundEnd.volume = this.volume;
+                    $soundEnd.volume = volume;
                     $soundEnd.play();
                     this.timeTableIndex++;
                 }
@@ -108,7 +112,6 @@ window.addEventListener('DOMContentLoaded', function() {
         this.isRunning = true;
         $startButton.style.display = 'none';
         $startInputArea.style.display = 'none';
-        $pauseButton.style.display = 'inline';
         $stopButton.style.display = 'inline';
         $p1Button.style.display = 'inline';
         $m1Button.style.display = 'inline';
@@ -119,7 +122,6 @@ window.addEventListener('DOMContentLoaded', function() {
         this.time = this.time + now - this.startTime;
         $startButton.style.display = 'inline';
         $startInputArea.style.display = 'inline';
-        $pauseButton.style.display = 'none';
         $stopButton.style.display = 'none';
         $p1Button.style.display = 'none';
         $m1Button.style.display = 'none';
@@ -132,7 +134,6 @@ window.addEventListener('DOMContentLoaded', function() {
         this.timeTableIndex = 0;
         $startButton.style.display = 'inline';
         $startInputArea.style.display = 'inline';
-        $pauseButton.style.display = 'none';
         $stopButton.style.display = 'none';
         $p1Button.style.display = 'none';
         $m1Button.style.display = 'none';
@@ -143,9 +144,6 @@ window.addEventListener('DOMContentLoaded', function() {
     $startButton.addEventListener('click', function() {
         timer.time -= $startInput.value * 1000 + 3000;
         timer.start();
-    });
-    $pauseButton.addEventListener('click', function() {
-        timer.pause();
     });
     $stopButton.addEventListener('click', function() {
         timer.stop();
