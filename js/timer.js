@@ -6,9 +6,21 @@ window.addEventListener('DOMContentLoaded', function() {
     var $p1Button = document.querySelector('#p1');
     var $m1Button = document.querySelector('#m1');
 
-    $stopButton.style.display = 'none';
-    $p1Button.style.display = 'none';
-    $m1Button.style.display = 'none';
+    function hideStartButton() {
+        $startButton.style.display = 'none';
+        $startInputArea.style.display = 'none';
+        $stopButton.style.display = 'inline';
+        $p1Button.style.display = 'inline';
+        $m1Button.style.display = 'inline';
+    }
+    function showStartButton() {
+        $startButton.style.display = 'inline';
+        $startInputArea.style.display = 'inline';
+        $stopButton.style.display = 'none';
+        $p1Button.style.display = 'none';
+        $m1Button.style.display = 'none';
+    }
+    showStartButton();
 
     var $info = document.querySelector('#info');
 
@@ -110,21 +122,13 @@ window.addEventListener('DOMContentLoaded', function() {
     Timer.prototype.start = function() {
         this.startTime = new Date().getTime();
         this.isRunning = true;
-        $startButton.style.display = 'none';
-        $startInputArea.style.display = 'none';
-        $stopButton.style.display = 'inline';
-        $p1Button.style.display = 'inline';
-        $m1Button.style.display = 'inline';
+        hideStartButton();
     }
     Timer.prototype.pause = function() {
         this.isRunning = false;
         var now = new Date().getTime();
         this.time = this.time + now - this.startTime;
-        $startButton.style.display = 'inline';
-        $startInputArea.style.display = 'inline';
-        $stopButton.style.display = 'none';
-        $p1Button.style.display = 'none';
-        $m1Button.style.display = 'none';
+        showStartButton();
     }
     Timer.prototype.stop = function() {
         this.time = 0;
@@ -132,11 +136,7 @@ window.addEventListener('DOMContentLoaded', function() {
         this.startTime = 0;
         this.timerId = 0;
         this.timeTableIndex = 0;
-        $startButton.style.display = 'inline';
-        $startInputArea.style.display = 'inline';
-        $stopButton.style.display = 'none';
-        $p1Button.style.display = 'none';
-        $m1Button.style.display = 'none';
+        showStartButton();
         $info.innerHTML = '';
     }
     var timer = new Timer();
