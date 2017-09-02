@@ -40,6 +40,8 @@ window.addEventListener('DOMContentLoaded', function() {
     });
     $volume.value = volume * 100;
 
+    var MARGIN = 3500;
+
     var Timer = function() {
         this.time = 0;
         this.isRunning = false;
@@ -73,25 +75,26 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         var rest;
         var now = new Date().getTime();
-        var time = Math.floor((this.time + now - this.startTime) / 1000);
+        var time = this.time + now - this.startTime;
 
         var timeTable = this.timeTable[this.timeTableIndex];
+        var targetTime = timeTable.time * 1000;
 
         var infoPrefix = '';
         switch(timeTable.type) {
             case this.START:
                 infoPrefix = 'マッチ開始まで';
-                if (timeTable.time <= time) {
+                if (targetTime <= time) {
                     $soundStart.volume = volume;
                     $soundStart.play();
                     this.timeTableIndex++;
                 }
-                rest = timeTable.time - time - 3;
+                rest = targetTime - time - MARGIN;
                 rest = rest < 0 ? 0 : rest;
                 break;
             case this.NORMAL:
                 infoPrefix = '範囲収縮まで';
-                if (timeTable.time - soundTable[this.soundIndex] <= time) {
+                if (targetTime - soundTable[this.soundIndex] * 1000 <= time) {
                     $soundEnd.pause();
                     $sounds[this.soundIndex].volume = volume;
                     $sounds[this.soundIndex].play();
@@ -104,20 +107,20 @@ window.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                 }
-                rest = timeTable.time - time;
+                rest = targetTime - time;
                 break;
             case this.END:
                 infoPrefix = '次エリア決定まで';
-                if (timeTable.time <= time) {
+                if (targetTime <= time) {
                     $soundEnd.volume = volume;
                     $soundEnd.play();
                     this.timeTableIndex++;
                 }
-                rest = timeTable.time - time;
+                rest = targetTime - time;
                 break;
         }
-
-        $info.innerHTML = infoPrefix + Math.floor(rest / 60) + '分' + rest % 60 + '秒';
+        var restSec = Math.floor(rest / 1000);
+        $info.innerHTML = infoPrefix + Math.floor(restSec / 60) + '分' + restSec % 60 + '秒';
     }
     Timer.prototype.start = function() {
         this.startTime = new Date().getTime();
@@ -142,7 +145,7 @@ window.addEventListener('DOMContentLoaded', function() {
     var timer = new Timer();
 
     $startButton.addEventListener('click', function() {
-        timer.time -= $startInput.value * 1000 + 3000;
+        timer.time -= $startInput.value * 1000 + MARGIN;
         timer.start();
     });
     $stopButton.addEventListener('click', function() {
