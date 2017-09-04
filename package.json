@@ -1,0 +1,28 @@
+{
+  "name": "pubg-timer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app/main.js",
+  "dependencies": {
+    "electron-settings": "^3.1.1"
+  },
+  "devDependencies": {
+    "electron-packager": "^9.0.1",
+    "electron-prebuilt": "^1.4.13"
+  },
+  "scripts": {
+    "build": "electron-packager . PUBGTimer --platform=win32 --overwrite",
+    "debug": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wamei/pubg-timer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wamei/pubg-timer/issues"
+  },
+  "homepage": "https://github.com/wamei/pubg-timer#readme"
+}

@@ -1,51 +1,83 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>PUBG TIMER</title>
     <script type="text/javascript" src="./js/timer.js"></script>
+    <style type="text/css">
+      html {
+          overflow: hidden;
+          padding: 0;
+          margin: 0;
+      }
+      body {
+          margin: 0;
+          padding: 8px;
+          background-color: rgba(0, 0, 0, 0.4);
+          color: #f1f1f1;
+          text-shadow: 0px 4px 3px rgba(0,0,0,0.4),
+          0px 8px 13px rgba(0,0,0,0.1),
+          0px 18px 23px rgba(0,0,0,0.1);
+          -webkit-app-region: drag;
+          -webkit-user-select: none;
+      }
+      .clickable {
+          -webkit-app-region: no-drag;
+      }
+      .left-margin {
+          margin-left: 8px;
+      }
+      .play {
+          cursor: pointer;
+      }
+      .play:hover {
+          color: #3ab2e9;
+      }
+      .border {
+          border-left: 2px solid red;
+      }
+    </style>
   </head>
-  <body>
-    <span id="info"></span>
-    <span id="startInputArea">マッチ開始まで
-      <select id="startInput">
-        <option>60</option>
-        <option>50</option>
-        <option>40</option>
-        <option>30</option>
-        <option>20</option>
-        <option>10</option>
-        <option>0</option>
-      </select>
-      秒</span>
-    <input id="start" type="button" value="すたーと">
-    <input id="m1" type="button" value="-1">
-    <input id="p1" type="button" value="+1">
-    <input id="stop" type="button" value="しゅうりょう">
-    <br>
-    volume<input id="volume" type="range">
-    <div style="font-size: 8pt;">
-      タイミング合わせてすたーとすれば収縮開始60秒前とかそういうタイミングで棒読みちゃんが教えてくれるんじゃないかな！
+  <body class="border">
+    <div class="wrapper">
+      <span id="info"></span>
+      <span id="startInputArea">マッチ開始まで
+        <select id="startInput" class="clickable">
+          <option>60</option>
+          <option>50</option>
+          <option>40</option>
+          <option>30</option>
+          <option>20</option>
+          <option>10</option>
+          <option>0</option>
+        </select>
+        秒
+        <span id="startButton" class="left-margin clickable play">▶</span>
+      </span>
+      <br><br>
+      volume<input id="volume" type="range" class="clickable">
+      <br>
+      <video id="sound60" width="0" height="0">
+        <source src="./sounds/60.wav">
+      </video>
+      <video id="sound30" width="0" height="0">
+        <source src="./sounds/30.wav">
+      </video>
+      <video id="sound15" width="0" height="0">
+        <source src="./sounds/15.wav">
+      </video>
+      <video id="sound5" width="0" height="0">
+        <source src="./sounds/5.wav">
+      </video>
+      <video id="sound0" width="0" height="0">
+        <source src="./sounds/0.wav">
+      </video>
+      <video id="soundstart" width="0" height="0">
+        <source src="./sounds/start.wav">
+      </video>
+      <video id="soundend" width="0" height="0">
+        <source src="./sounds/end.wav">
+      </video>
     </div>
-    <video id="sound60" width="0" height="0">
-      <source src="./sounds/60.wav">
-    </video>
-    <video id="sound30" width="0" height="0">
-      <source src="./sounds/30.wav">
-    </video>
-    <video id="sound15" width="0" height="0">
-      <source src="./sounds/15.wav">
-    </video>
-    <video id="sound5" width="0" height="0">
-      <source src="./sounds/5.wav">
-    </video>
-    <video id="sound0" width="0" height="0">
-      <source src="./sounds/0.wav">
-    </video>
-    <video id="soundstart" width="0" height="0">
-      <source src="./sounds/start.wav">
-    </video>
-    <video id="soundend" width="0" height="0">
-      <source src="./sounds/end.wav">
-    </video>
   </body>
 </html>
