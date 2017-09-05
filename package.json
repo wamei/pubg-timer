@@ -11,7 +11,7 @@
     "electron-prebuilt": "^1.4.13"
   },
   "scripts": {
-    "build": "electron-packager . PUBGTimer --platform=win32 --arch=x64 --icon=images/pubg-timer.ico --overwrite",
+    "build": "electron-packager . PUBGTimer --platform=win32 --arch=x64 --icon=images/pubg-timer.ico --ignore=\".*\\.zip\" --overwrite",
     "debug": "electron ."
   },
   "repository": {
