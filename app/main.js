@@ -40,9 +40,21 @@ app.on('ready', () => {
     mainWindow.setAlwaysOnTop(true, "floating", 1);
 
     mainWindow.loadURL('https://wamei.github.io/pubg-timer/');
+    //mainWindow.loadURL('file://' + __dirname + '/../index.html');
+
+    var defaultShortcuts = {
+        StartAndStop: 'F5',
+        ToggleWindowMoveMode: 'F6',
+        ForwardTime: 'F7',
+        BackwordTime: 'F8',
+        VolumeUp: 'Ctrl+F7',
+        VolumeDown: 'Ctrl+F8'
+    };
+    var shortcuts = storage.get("shortcuts", defaultShortcuts);
 
     mainWindow.on('close', () => {
         storage.set("windowPosition", mainWindow.getPosition());
+        storage.set("shortcuts", shortcuts);
     });
 
     mainWindow.on('closed', () => {
@@ -54,35 +66,54 @@ app.on('ready', () => {
         mainWindow.webContents.executeJavaScript('setWindowBorder('+!flag+')');
     };
 
-    globalShortcut.register('Ctrl+F5', () => {
-        mainWindow.webContents.executeJavaScript('timer.toggle();');
-    });
-    globalShortcut.register('Ctrl+F6', () => {
-        isClickThrough = !isClickThrough;
-        setClickThrough(isClickThrough);
-    });
-    globalShortcut.register('Ctrl+F7', () => {
-        mainWindow.webContents.executeJavaScript('timer.time += 1000;');
-    });
-    globalShortcut.register('Ctrl+F8', () => {
-        mainWindow.webContents.executeJavaScript('timer.time -= 1000;');
-    });
-    globalShortcut.register('Ctrl+Shift+F7', () => {
-        mainWindow.webContents.executeJavaScript('$volume.value = $volume.value - 1; $volume.dispatchEvent(new Event("change"));');
-        mainWindow.setSize(MaxWidth, MaxHeight);
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            mainWindow.setSize(MinWidth, MinHeight);
-        }, 500);
-    });
-    globalShortcut.register('Ctrl+Shift+F8', () => {
-        mainWindow.webContents.executeJavaScript('$volume.value = $volume.value - 0 + 1; $volume.dispatchEvent(new Event("change"));');
-        mainWindow.setSize(MaxWidth, MaxHeight);
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            mainWindow.setSize(MinWidth, MinHeight);
-        }, 500);
-    });
+    var methods = {
+        StartAndStop: () => {
+            mainWindow.webContents.executeJavaScript('timer.toggle();');
+        },
+        ToggleWindowMoveMode: () => {
+            isClickThrough = !isClickThrough;
+            setClickThrough(isClickThrough);
+            if (!isClickThrough) {
+                mainWindow.focus();
+            }
+        },
+        ForwardTime: () => {
+            mainWindow.webContents.executeJavaScript('timer.forwardTime();');
+        },
+        BackwordTime: () => {
+            mainWindow.webContents.executeJavaScript('timer.backwardTime();');
+        },
+        VolumeUp: () => {
+            mainWindow.webContents.executeJavaScript('$volume.value = $volume.value - 1; $volume.dispatchEvent(new Event("change"));');
+            mainWindow.setSize(MaxWidth, MaxHeight);
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                mainWindow.setSize(MinWidth, MinHeight);
+            }, 500);
+        },
+        VolumeDown: () => {
+            mainWindow.webContents.executeJavaScript('$volume.value = $volume.value - 0 + 1; $volume.dispatchEvent(new Event("change"));');
+            mainWindow.setSize(MaxWidth, MaxHeight);
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                mainWindow.setSize(MinWidth, MinHeight);
+            }, 500);
+        }
+    };
+
+    var registerShortcut = (accelorator, functionName) => {
+        if (!methods[functionName]) {
+            return;
+        }
+        globalShortcut.register(accelorator, methods[functionName]);
+    };
+
+    for (var key in shortcuts) {
+        if (!shortcuts.hasOwnProperty(key)) {
+            continue;
+        }
+        registerShortcut(shortcuts[key], key);
+    }
 
     ipcMain.on('startTimer', (event, arg) => {
         isClickThrough = true;

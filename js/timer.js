@@ -123,6 +123,24 @@ Timer.prototype.toggle = function() {
         this.start();
     }
 };
+Timer.prototype.forwardTime = function() {
+    if (this.isRunning) {
+        this.time += 1000;
+    } else {
+        var length = $startInput.selectedIndex + 1;
+        length = length >= $startInput.length ? $startInput.length - 1 : length;
+        $startInput.selectedIndex = length;
+    }
+};
+Timer.prototype.backwardTime = function() {
+    if (this.isRunning) {
+        this.time -= 1000;
+    } else {
+        var length = $startInput.selectedIndex - 1;
+        length = length < 0 ? 0 : length;
+        $startInput.selectedIndex = length;
+    }
+};
 window.addEventListener('DOMContentLoaded', function() {
     $info = document.querySelector('#info');
     $startInput = document.querySelector('#startInput');
