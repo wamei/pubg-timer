@@ -35,10 +35,11 @@ var Timer = function() {
     ];
     this.timeTableIndex = 0;
     this.soundIndex = 0;
-    this.timerId = window.setInterval(this.loop.bind(this), 100);
+    this.timerId = window.requestAnimationFrame(this.loop.bind(this));
 };
 Timer.prototype.loop = function() {
     if (!this.isRunning) {
+        this.timerId = window.requestAnimationFrame(this.loop.bind(this));
         return;
     }
     var rest;
@@ -89,6 +90,8 @@ Timer.prototype.loop = function() {
     }
     var restSec = Math.floor(rest / 1000);
     $info.innerHTML = infoPrefix + Math.floor(restSec / 60) + '分' + restSec % 60 + '秒';
+
+    this.timerId = window.requestAnimationFrame(this.loop.bind(this));
 };
 Timer.prototype.start = function() {
     this.time = this.time - this.MARGIN_TIME - $startInput.value * 1000;
