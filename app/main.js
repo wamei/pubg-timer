@@ -43,12 +43,12 @@ app.on('ready', () => {
     //mainWindow.loadURL('file://' + __dirname + '/../index.html');
 
     var defaultShortcuts = {
-        StartAndStop: 'F5',
-        ToggleWindowMoveMode: 'F6',
-        ForwardTime: 'F7',
-        BackwordTime: 'F8',
-        VolumeUp: 'Ctrl+F7',
-        VolumeDown: 'Ctrl+F8'
+        StartAndStop:         'Ctrl+F5',
+        ToggleWindowMoveMode: 'Ctrl+F6',
+        ForwardTime:          'Ctrl+F7',
+        BackwordTime:         'Ctrl+F8',
+        VolumeUp:             'Ctrl+Shift+F7',
+        VolumeDown:           'Ctrl+Shift+F8'
     };
     var shortcuts = storage.get("shortcuts", defaultShortcuts);
 
