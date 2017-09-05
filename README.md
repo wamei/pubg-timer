@@ -13,3 +13,8 @@ https://github.com/wamei/pubg-timer/releases
 | ctrl+F8       | 時間調節+1秒
 | ctrl+shift+F7 | ボリュームを下げる
 | ctrl+shift+F8 | ボリュームを上げる
+
+#### ショートカット設定
+一度起動＆終了してれば  
+``C:\Users\YourName\AppData\Roaming\pubg-timer\Settings``  
+とかに設定ファイル吐かれてるから手動で書き換えて！
