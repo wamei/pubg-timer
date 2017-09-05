@@ -88,7 +88,7 @@ Timer.prototype.loop = function() {
         rest = targetTime - time;
         break;
     }
-    var restSec = Math.floor(rest / 1000);
+    var restSec = Math.ceil(rest / 1000);
     $info.innerHTML = infoPrefix + Math.floor(restSec / 60) + '分' + restSec % 60 + '秒';
 
     this.timerId = window.requestAnimationFrame(this.loop.bind(this));
