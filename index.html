@@ -21,6 +21,12 @@
           -webkit-app-region: drag;
           -webkit-user-select: none;
       }
+      .hidden {
+          display: none;
+      }
+      .center {
+          text-align: center;
+      }
       .clickable {
           -webkit-app-region: no-drag;
       }
@@ -36,10 +42,15 @@
       .border {
           border-left: 2px solid red;
       }
+      #clock {
+          font-size: 30px;
+          margin-top: -5px;
+      }
     </style>
   </head>
   <body class="border">
-    <div class="wrapper">
+    <div id="clock" class="center hidden"></div>
+    <div id="content">
       <span id="info"></span>
       <span id="startInputArea">マッチ開始まで
         <select id="startInput" class="clickable">

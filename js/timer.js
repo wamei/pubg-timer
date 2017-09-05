@@ -5,6 +5,8 @@ var $soundEnd;
 var $volume;
 var $startInput;
 var $startInputArea;
+var $content;
+var $clock;
 var soundTable = [60, 30, 15, 5, 0];
 var volume = window.localStorage.getItem('pubgtimer_volume') / 100 || 0.5;
 var timer;
@@ -38,6 +40,7 @@ var Timer = function() {
     this.timerId = window.requestAnimationFrame(this.loop.bind(this));
 };
 Timer.prototype.loop = function() {
+    $clock.innerHTML = formatDate(new Date(), 'hh:mm:ss');;
     if (!this.isRunning) {
         this.timerId = window.requestAnimationFrame(this.loop.bind(this));
         return;
@@ -165,6 +168,9 @@ window.addEventListener('DOMContentLoaded', function() {
         timer.start();
     });
 
+    $clock = document.querySelector('#clock');
+    $content = document.querySelector('#content');
+
     timer = new Timer();
 }, false);
 
@@ -174,4 +180,28 @@ var setWindowBorder = function(flag) {
     } else {
         document.body.classList.remove('border');
     }
-}
+};
+var toggleClock = function() {
+    if ($clock.classList.contains('hidden')) {
+        $clock.classList.remove('hidden');
+        $content.classList.add('hidden');
+    } else {
+        $clock.classList.add('hidden');
+        $content.classList.remove('hidden');
+    }
+};
+var formatDate = function (date, format) {
+  if (!format) format = 'YYYY-MM-DD hh:mm:ss.SSS';
+  format = format.replace(/YYYY/g, date.getFullYear());
+  format = format.replace(/MM/g, ('0' + (date.getMonth() + 1)).slice(-2));
+  format = format.replace(/DD/g, ('0' + date.getDate()).slice(-2));
+  format = format.replace(/hh/g, ('0' + date.getHours()).slice(-2));
+  format = format.replace(/mm/g, ('0' + date.getMinutes()).slice(-2));
+  format = format.replace(/ss/g, ('0' + date.getSeconds()).slice(-2));
+  if (format.match(/S/g)) {
+    var milliSeconds = ('00' + date.getMilliseconds()).slice(-3);
+    var length = format.match(/S/g).length;
+    for (var i = 0; i < length; i++) format = format.replace(/S/, milliSeconds.substring(i, i + 1));
+  }
+  return format;
+};

@@ -43,14 +43,15 @@ app.on('ready', () => {
     //mainWindow.loadURL('file://' + __dirname + '/../index.html');
 
     var defaultShortcuts = {
-        StartAndStop:         'Ctrl+F5',
-        ToggleWindowMoveMode: 'Ctrl+F6',
-        ForwardTime:          'Ctrl+F7',
-        BackwordTime:         'Ctrl+F8',
-        VolumeUp:             'Ctrl+Shift+F7',
-        VolumeDown:           'Ctrl+Shift+F8'
+        StartAndStop:         'Shift+F5',
+        ToggleWindowMoveMode: 'Shift+F6',
+        ForwardTime:          'Shift+F7',
+        BackwordTime:         'Shift+F8',
+        ToggleClock:          'Shift+F9',
+        VolumeUp:             'Ctrl+F7',
+        VolumeDown:           'Ctrl+F8'
     };
-    var shortcuts = storage.get("shortcuts", defaultShortcuts);
+    var shortcuts = Object.assign(storage.get("shortcuts", defaultShortcuts), defaultShortcuts);
 
     mainWindow.on('close', () => {
         storage.set("windowPosition", mainWindow.getPosition());
@@ -98,6 +99,9 @@ app.on('ready', () => {
             resizeTimer = setTimeout(() => {
                 mainWindow.setSize(MinWidth, MinHeight);
             }, 500);
+        },
+        ToggleClock: () => {
+            mainWindow.webContents.executeJavaScript('toggleClock();');
         }
     };
 
